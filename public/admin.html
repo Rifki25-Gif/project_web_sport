@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gray-800 text-gray-300 flex-shrink-0">
+            <div class="p-6 text-center">
+                <h1 class="text-2xl font-bold text-white">SPORT<span class="text-blue-500">ADMIN</span></h1>
+            </div>
+            <nav class="mt-6">
+                <a href="#" class="flex items-center px-6 py-3 text-gray-100 bg-gray-700">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-700 transition duration-200">
+                    <i class="fas fa-box mr-3"></i>
+                    <span>Products</span>
+                </a>
+                <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-700 transition duration-200">
+                    <i class="fas fa-shopping-cart mr-3"></i>
+                    <span>Orders</span>
+                </a>
+                <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-700 transition duration-200">
+                    <i class="fas fa-users mr-3"></i>
+                    <span>Customers</span>
+                </a>
+                <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-700 transition duration-200">
+                    <i class="fas fa-chart-line mr-3"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="#" class="flex items-center px-6 py-3 hover:bg-gray-700 transition duration-200">
+                    <i class="fas fa-cog mr-3"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="absolute bottom-0 w-64 p-6">
+                 <a href="#" class="flex items-center px-6 py-3 text-red-400 hover:bg-gray-700 transition duration-200">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8 overflow-y-auto">
+            <div id="loading-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
+                <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+
+            <div class="fade-in">
+                <!-- Header -->
+                <header class="flex justify-between items-center mb-8">
+                    <h2 class="text-3xl font-bold">Dashboard Overview</h2>
+                    <div class="flex items-center space-x-4">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                            <i class="fas fa-plus mr-2"></i> Add Product
+                        </button>
+                        <div class="relative">
+                            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" placeholder="Search..." class="bg-gray-800 border border-gray-700 rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Statistics Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                        <div class="flex items-center">
+                            <div class="p-4 bg-blue-500 rounded-full">
+                                <i class="fas fa-box text-2xl text-white"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-gray-400">Total Products</p>
+                                <p id="total-products" class="text-3xl font-bold">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                        <div class="flex items-center">
+                            <div class="p-4 bg-green-500 rounded-full">
+                                <i class="fas fa-shopping-cart text-2xl text-white"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-gray-400">Total Orders</p>
+                                <p id="total-orders" class="text-3xl font-bold">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                        <div class="flex items-center">
+                            <div class="p-4 bg-orange-500 rounded-full">
+                                <i class="fas fa-dollar-sign text-2xl text-white"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-gray-400">Total Revenue</p>
+                                <p id="total-revenue" class="text-3xl font-bold">$0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sales Chart -->
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+                    <h3 class="text-xl font-bold mb-4">Monthly Sales</h3>
+                    <div class="chart-container">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Orders Table -->
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">Recent Orders</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="border-b border-gray-700">
+                                    <th class="py-3 px-4">Order ID</th>
+                                    <th class="py-3 px-4">Customer</th>
+                                    <th class="py-3 px-4">Product</th>
+                                    <th class="py-3 px-4">Amount</th>
+                                    <th class="py-3 px-4">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-orders-body">
+                                <!-- JS will populate this -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadingOverlay = document.getElementById('loading-overlay');
+
+            // --- FAKE DATA ---
+            const stats = {
+                totalProducts: 1258,
+                totalOrders: 742,
+                totalRevenue: 54230,
+            };
+
+            const monthlySales = {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                data: [1200, 1900, 3000, 5000, 2300, 3100, 4200, 3500, 2800, 4500, 5000, 6200],
+            };
+            
+            const recentOrders = [
+                { id: 'ORD#001', customer: 'John Doe', product: 'Running Shoes', amount: 120.00, status: 'Shipped' },
+                { id: 'ORD#002', customer: 'Jane Smith', product: 'Yoga Mat', amount: 25.50, status: 'Processing' },
+                { id: 'ORD#003', customer: 'Mike Johnson', product: 'Dumbbells Set', amount: 80.00, status: 'Delivered' },
+                { id: 'ORD#004', customer: 'Sarah Brown', product: 'Sports Bottle', amount: 15.00, status: 'Shipped' },
+                 { id: 'ORD#005', customer: 'Chris Lee', product: 'Basketball', amount: 35.75, status: 'Cancelled' },
+            ];
+
+            // --- SIMULATE LOADING ---
+            setTimeout(() => {
+                populateDashboard();
+                loadingOverlay.style.display = 'none';
+            }, 1500);
+
+
+            function populateDashboard() {
+                // Animated Counters
+                animateValue('total-products', 0, stats.totalProducts, 1000);
+                animateValue('total-orders', 0, stats.totalOrders, 1000);
+                animateRevenue('total-revenue', 0, stats.totalRevenue, 1000);
+
+                // Sales Chart
+                renderSalesChart();
+
+                // Recent Orders
+                renderRecentOrders();
+            }
+
+            // --- COUNTER ANIMATION ---
+            function animateValue(id, start, end, duration) {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    document.getElementById(id).innerText = Math.floor(progress * (end - start) + start).toLocaleString();
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            }
+             function animateRevenue(id, start, end, duration) {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    const currentValue = Math.floor(progress * (end - start) + start);
+                    document.getElementById(id).innerText = '$' + currentValue.toLocaleString();
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            }
+
+
+            // --- CHART.JS ---
+            function renderSalesChart() {
+                const ctx = document.getElementById('salesChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: monthlySales.labels,
+                        datasets: [{
+                            label: 'Sales',
+                            data: monthlySales.data,
+                            borderColor: 'rgba(59, 130, 246, 0.8)',
+                            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgba(59, 130, 246, 1)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    color: '#9CA3AF'
+                                },
+                                grid: {
+                                    color: '#4B5563'
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: '#9CA3AF'
+                                },
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+
+            // --- RENDER TABLE ---
+             function renderRecentOrders() {
+                const tableBody = document.getElementById('recent-orders-body');
+                let tableHTML = '';
+                recentOrders.forEach(order => {
+                    let statusClass = '';
+                    switch(order.status) {
+                        case 'Shipped': statusClass = 'bg-blue-500 text-blue-100'; break;
+                        case 'Delivered': statusClass = 'bg-green-500 text-green-100'; break;
+                        case 'Processing': statusClass = 'bg-yellow-500 text-yellow-100'; break;
+                        case 'Cancelled': statusClass = 'bg-red-500 text-red-100'; break;
+                    }
+
+                    tableHTML += `
+                        <tr class="border-b border-gray-700 hover:bg-gray-700 transition duration-200">
+                            <td class="py-3 px-4 font-semibold">${order.id}</td>
+                            <td class="py-3 px-4">${order.customer}</td>
+                            <td class="py-3 px-4">${order.product}</td>
+                            <td class="py-3 px-4">$${order.amount.toFixed(2)}</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full ${statusClass}">
+                                    ${order.status}
+                                </span>
+                            </td>
+                        </tr>
+                    `;
+                });
+                tableBody.innerHTML = tableHTML;
+            }
+        });
+    </script>
+</body>
+</html> 

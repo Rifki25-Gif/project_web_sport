@@ -1,0 +1,85 @@
+/* Athletic Color Scheme */
+:root {
+    --primary-color: #00529B; /* A strong blue */
+    --secondary-color: #00A8E8; /* A vibrant light blue */
+    --accent-color: #FFC72C; /* A gold/yellow accent */
+    --text-color: #333;
+    --bg-color: #f4f7f6;
+    --completed-color: #007A33; /* A 'victory' green */
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* Progress Bar Styles */
+.step-item {
+    @apply relative flex flex-col items-center text-gray-500;
+    transition: all 0.3s ease;
+}
+
+.step-item.active {
+    @apply text-blue-600 font-semibold;
+}
+
+.step-item.completed {
+    @apply text-green-600;
+}
+
+.step-marker {
+    @apply w-10 h-10 flex items-center justify-center border-2 rounded-full;
+    transition: all 0.3s ease;
+}
+
+.step-item.active .step-marker {
+    @apply border-blue-600 bg-blue-100;
+}
+
+.step-item.completed .step-marker {
+    @apply border-green-600 bg-green-100 text-green-600;
+}
+
+.step-label {
+    @apply mt-2 text-xs text-center;
+}
+
+/* Form Styles */
+.form-input {
+    @apply block w-full px-4 py-3 mb-2 text-sm placeholder-gray-500 bg-white border rounded;
+    transition: border-color .3s ease-in-out;
+}
+
+.form-input:focus {
+    @apply border-blue-500 ring-blue-500;
+}
+
+.form-input.invalid {
+    @apply border-red-500;
+}
+
+.error-message {
+    @apply text-red-500 text-xs mt-1;
+}
+
+/* Button Styles */
+.btn {
+    @apply px-6 py-3 font-semibold rounded-lg text-white;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #003d73;
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+}
+
+.btn-secondary:hover {
+    background-color: #0086b3;
+} 
