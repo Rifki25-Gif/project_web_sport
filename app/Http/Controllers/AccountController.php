@@ -88,17 +88,17 @@ class AccountController extends Controller
         return view('account.order-detail', compact('order'));
     }
 
-    public function wishlist()
-    {
-        $wishlistItems = Wishlist::with('product')
-            ->where('user_id', Auth::id())
-            ->latest()
-            ->get();
+    // public function wishlist()
+    // {
+    //     $wishlistItems = Wishlist::with('product')
+    //         ->where('user_id', Auth::id())
+    //         ->latest()
+    //         ->get();
 
-        return view('account.wishlist', [
-            'wishlistItems' => $wishlistItems
-        ]);
-    }
+    //     return view('account.wishlist', [
+    //         'wishlistItems' => $wishlistItems
+    //     ]);
+    // }
 
     public function profile()
     {
@@ -110,14 +110,12 @@ class AccountController extends Controller
         return view('account.addresses');
     }
     
-    public function removeFromWishlist($wishlistId)
-    {
-        $wishlist = Wishlist::where('id', $wishlistId)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
-            
-        $wishlist->delete();
-        
-        return back()->with('success', 'Product has been removed from your wishlist.');
-    }
+    // public function removeFromWishlist($wishlistId)
+    // {
+    //     $wishlist = Wishlist::where('id', $wishlistId)
+    //         ->where('user_id', Auth::id())
+    //         ->firstOrFail();
+    //     $wishlist->delete();
+    //     return back()->with('success', 'Product has been removed from your wishlist.');
+    // }
 }

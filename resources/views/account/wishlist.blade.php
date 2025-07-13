@@ -1,5 +1,6 @@
 {{--
-    CATATAN: Route 'account.wishlist' tidak ada. File ini kemungkinan tidak digunakan.
+    CATATAN: Route 'account.wishlist' tidak ada dan file ini tidak digunakan.
+    Seluruh isi file dinonaktifkan untuk mencegah error.
 --}}
 <x-account-layout>
     <x-slot name="header">
