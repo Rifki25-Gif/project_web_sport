@@ -17,7 +17,10 @@
                                 Dashboard
                             </a>
                             <a href="{{ route('account.orders') }}" class="block text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('account.orders') ? 'bg-gray-200 dark:bg-gray-600' : '' }}">
-                                My Orders
+                                Order History
+                            </a>
+                            <a href="{{ route('account.wishlist') }}" class="block text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('account.wishlist') ? 'bg-gray-200 dark:bg-gray-600' : '' }}">
+                                Wishlist
                             </a>
                             <a href="{{ route('account.profile') }}" class="block text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('account.profile') ? 'bg-gray-200 dark:bg-gray-600' : '' }}">
                                 Profile Settings
