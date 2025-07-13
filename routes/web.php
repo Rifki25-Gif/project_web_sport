@@ -20,7 +20,11 @@ use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 // Using Livewire component for the homepage
-Route::get('/', [HomeController::class, 'index'])->name('welcome');
+// Route::get('/', action: [HomeController::class, 'index'])->name('welcome');
+
+Route::get('/', function () {
+    return 'Tes Koneksi Berhasil!';
+});
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
 Route::get('/products/{product:slug}/reviews', [ReviewController::class, 'index'])->name('products.reviews');
