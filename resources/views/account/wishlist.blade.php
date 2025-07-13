@@ -1,3 +1,6 @@
+{{--
+    CATATAN: Route 'account.wishlist' tidak ada. File ini kemungkinan tidak digunakan.
+--}}
 <x-account-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
