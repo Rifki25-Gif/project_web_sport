@@ -64,6 +64,7 @@ Route::middleware('auth')->prefix('account')->name('account.')->group(function (
     Route::get('orders/{id}', [AccountController::class, 'orderDetails'])->name('orders.show');
     Route::get('profile', [AccountController::class, 'profile'])->name('profile');
     Route::get('addresses', [AccountController::class, 'addresses'])->name('addresses');
+    Route::get('wishlist', [App\Http\Controllers\AccountController::class, 'wishlist'])->name('wishlist');
 });
 
 // Wishlist Routes
